@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -20,8 +21,12 @@ public class EtisProcess {
     private static final Logger logger = LoggerFactory.getLogger(EtisProcess.class);
 
     public static void main(String[] args) throws IOException, EdgeApplicationAuthenticatorException, EdgeApplicationConnectorException {
-        Properties etisProps;
-        etisProps = loadProps("etis.properties");
+        String propsFile = "etis.properties";
+        if (args.length > 0) {
+            propsFile = args[0].trim();
+            logger.info("Custom properties file given: {}", propsFile);
+        }
+        Properties etisProps = loadProps(propsFile);
         logger.info("loaded props: {}", etisProps);
         AuthorizedApplicationConfiguration authorizedApplicationConfiguration;
         authorizedApplicationConfiguration = handleAuth(etisProps);
@@ -42,8 +47,18 @@ public class EtisProcess {
     }
 
     private static Properties loadProps(final String filename) throws IOException {
-        final String path = Thread.currentThread().getContextClassLoader().getResource(filename).getPath();
         final Properties etisProps = new Properties();
+        String path;
+        if (filename.equals("etis.properties")) {
+            path = Thread.currentThread().getContextClassLoader().getResource(filename).getPath();
+        } else {
+            if (Path.of(filename).isAbsolute()) {
+                path = filename;
+            } else {
+                path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+                path = String.format("%s/%s", path, filename);
+            }
+        }
         etisProps.load(new FileInputStream(path));
         return etisProps;
     }
