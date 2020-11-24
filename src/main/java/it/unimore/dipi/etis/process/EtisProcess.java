@@ -82,7 +82,7 @@ public class EtisProcess {
     }
 
     private static void subscribe(final EdgeApplicationServiceDescriptor rsuServiceDescriptor, final EdgeApplicationConnector edgeApplicationConnector, final Properties etisProps) throws EdgeApplicationConnectorException {
-        final RsuNotificationsHandle rsuHandle = new RsuNotificationsHandle(edgeApplicationConnector);
+        final RsuNotificationsHandle rsuHandle = new RsuNotificationsHandle(edgeApplicationConnector, etisProps);
         edgeApplicationConnector.setupNotificationChannel(etisProps.getProperty("opennessNameSpace"), etisProps.getProperty("opennessAppID"), rsuHandle);
         edgeApplicationConnector.postSubscription(rsuServiceDescriptor.getNotificationDescriptorList(),
                 rsuServiceDescriptor.getServiceUrn().getNamespace(),
