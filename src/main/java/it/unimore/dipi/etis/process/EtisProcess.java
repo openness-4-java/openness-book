@@ -38,11 +38,11 @@ public class EtisProcess {
                 etisProps.getProperty("opennessWs"));
         logger.info("subscribing to 'rsu-digitaltwin-demo' service (if any)...");
         Optional<EdgeApplicationServiceDescriptor> rsuService;
-        rsuService = discover(edgeApplicationConnector, "rsu-digitaltwin-demo");
+        rsuService = discover(edgeApplicationConnector, etisProps.getProperty("targetServiceUrnId"));
         if (rsuService.isPresent()) {
             subscribe(rsuService.get(), edgeApplicationConnector, etisProps);
         } else {
-            logger.info("no 'rsu-digitaltwin-demo' service found!");
+            logger.info("no '{}' service found!", etisProps.getProperty("targetServiceUrnId"));
         }
     }
 
@@ -103,7 +103,7 @@ public class EtisProcess {
                 rsuServiceDescriptor.getServiceUrn().getNamespace(),
                 rsuServiceDescriptor.getServiceUrn().getId());
         final String endpoint = rsuServiceDescriptor.getEndpointUri();
-        logger.info("\tgot rsu endpoint: {}", endpoint);
+        logger.info("\tgot service endpoint: {}", endpoint);
         //getEvents(endpoint);
     }
 
