@@ -48,7 +48,7 @@ public class EtisProcess {
 
     private static Properties loadProps(final String filename) throws IOException {
         final Properties etisProps = new Properties();
-        String path;
+        /*String path;
         if (filename.equals("etis.properties")) {
             path = Thread.currentThread().getContextClassLoader().getResource(filename).getPath();
         } else {
@@ -58,8 +58,8 @@ public class EtisProcess {
                 path = Thread.currentThread().getContextClassLoader().getResource("").getPath();
                 path = String.format("%s/%s", path, filename);
             }
-        }
-        etisProps.load(new FileInputStream(path));
+        }*/
+        etisProps.load(new FileInputStream(filename));
         return etisProps;
     }
 
