@@ -28,17 +28,14 @@ public class EtisProcess {
         }
         Properties etisProps = loadProps(propsFile);
         logger.info("loaded props: {}", etisProps);
-        AuthorizedApplicationConfiguration authorizedApplicationConfiguration;
-        authorizedApplicationConfiguration = handleAuth(etisProps);
+        AuthorizedApplicationConfiguration authorizedApplicationConfiguration = handleAuth(etisProps);
         logger.info("authenticated with AppId: {}", authorizedApplicationConfiguration.getApplicationId());
-        EdgeApplicationConnector edgeApplicationConnector;
-        edgeApplicationConnector = new EdgeApplicationConnector(
+        EdgeApplicationConnector edgeApplicationConnector = new EdgeApplicationConnector(
                 etisProps.getProperty("opennessApiBase"),
                 authorizedApplicationConfiguration,
                 etisProps.getProperty("opennessWs"));
         logger.info("subscribing to 'rsu-digitaltwin-demo' service (if any)...");
-        Optional<EdgeApplicationServiceDescriptor> rsuService;
-        rsuService = discover(edgeApplicationConnector, etisProps.getProperty("targetServiceUrnId"));
+        Optional<EdgeApplicationServiceDescriptor> rsuService = discover(edgeApplicationConnector, etisProps.getProperty("targetServiceUrnId"));
         if (rsuService.isPresent()) {
             subscribe(rsuService.get(), edgeApplicationConnector, etisProps);
         } else {
